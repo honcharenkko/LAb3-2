@@ -1,0 +1,64 @@
+from abc import ABC, abstractmethod
+
+class ICourse(ABC):
+    @abstractmethod
+    def __str__(self):
+        pass
+
+class ILocalCourse(ICourse):
+    pass
+
+class IOffsiteCourse(ICourse):
+    pass
+
+class ITeacher(ABC):
+    @abstractmethod
+    def __str__(self):
+        pass
+
+class CourseFactory:
+    @staticmethod
+    def create_course(course_type, name, teacher, program):
+        if course_type == "local":
+            return LocalCourse(name, teacher, program)
+        elif course_type == "offsite":
+            return OffsiteCourse(name, teacher, program)
+        else:
+            raise ValueError("Invalid course type")
+
+class LocalCourse(ILocalCourse):
+    def __init__(self, name, teacher, program):
+        self.name = name
+        self.teacher = teacher
+        self.program = program
+
+    def __str__(self):
+        return f"LocalCourse[name={self.name}, teacher={self.teacher}, program={self.program}]"
+
+class OffsiteCourse(IOffsiteCourse):
+    def __init__(self, name, teacher, program):
+        self.name = name
+        self.teacher = teacher
+        self.program = program
+
+    def __str__(self):
+        return f"OffsiteCourse[name={self.name}, teacher={self.teacher}, program={self.program}]"
+
+class Teacher(ITeacher):
+    def __init__(self, name, courses):
+        self.name = name
+        self.courses = courses
+
+    def __str__(self):
+        return f"Teacher[name={self.name}, courses={self.courses}]"
+
+
+
+teacher1 = Teacher("Петро Порошенко", [])
+teacher2 = Teacher("Дмитро Гордон", [])
+
+course1 = CourseFactory.create_course("local", "Python Fundamentals", teacher1, ["Introduction", "Functions", "Object-Oriented Programming"])
+course2 = CourseFactory.create_course("offsite", "Advanced Python", teacher2, ["Decorators", "Generators", "Error Handling"])
+
+print(course1)
+print(course2)
